@@ -8,9 +8,11 @@
 /// LZ77 code group struct
 struct CodeGroup{
 
-    unsigned offset = 0;
-    unsigned length = 0;
-    char next_char = '$';
+    unsigned offset;
+    unsigned length;
+    char next_char;
+
+    CodeGroup() : offset(0),length(0), next_char('$'){}
 
     std::string ToString()
     {

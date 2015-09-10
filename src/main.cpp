@@ -11,13 +11,12 @@ std::string ReadFile(std::string file);
 /// Ask a question, read and return user input
 template<class T> T ReadInput(std::string ask);
 
-
-
 int main()
 {
     unsigned lookahead_size;
     unsigned history_size;
     std::string file_path;
+    std::string input_string;
 
     while(1)
     {
@@ -26,9 +25,9 @@ int main()
         history_size = ReadInput<unsigned>("Please enter the sliding-history buffer size");
         file_path = ReadInput<std::string>("Please enter the the file path");
 
-        if(ReadFile(file_path).length() > 0)
+        if((input_string = ReadFile(file_path)).length() > 0)
         {
-            LZ77 lz(lookahead_size,history_size, file_path);
+            LZ77 lz(lookahead_size,history_size, input_string);
             std::cout << std::endl << "The resulting LZ77 code is: " << std::endl;
             std::cout << lz.Compress() << std::endl;
         }
@@ -36,8 +35,6 @@ int main()
 
     return 0;
 }
-
-
 
 template<class T> T ReadInput(std::string ask)
 {

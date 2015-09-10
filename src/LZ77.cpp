@@ -8,14 +8,16 @@ LZ77::LZ77(const unsigned lookahead_size,
                                              m_input_pointer(lookahead_size)
 {
     // Fill the look-ahead buffer with the input string
-    for(char ch : m_input_string)
+    for(unsigned i = 0; i < m_lookahead_size; i++)
     {
-        if(m_lookahead.size() < m_lookahead_size)
+        if(i < m_input_string.size())
         {
-            m_lookahead.push_back(ch);
+            m_lookahead.push_back(m_input_string.at(i));
         }
         else
+        {
             break;
+        }
     }
 }
 
