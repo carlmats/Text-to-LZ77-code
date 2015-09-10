@@ -51,7 +51,7 @@ const std::string LZ77::Compress()
         result.append(code_group.ToString());
 
         // Move the lookahead and sliding-history buffer
-        MoveBuffers(code_group);
+        MoveBuffers(code_group.length);
     }
 
     return result;
@@ -64,7 +64,7 @@ void LZ77::MakeGroup(CodeGroup& code_group, const unsigned current, const unsign
     code_group.offset = m_history.size() - historyIndex;
 
     // If there still is a character left in the lookahead after the match
-    if((current + 1) <= m_lookahead.size())
+    if(current < m_lookahead.size())
     {
         code_group.next_char = m_lookahead.at(current);
     }
@@ -83,10 +83,10 @@ void LZ77::MakeGroup(CodeGroup& code_group, const unsigned current, const unsign
 }
 
 
-void LZ77::MoveBuffers(CodeGroup code_group)
+void LZ77::MoveBuffers(const unsigned group_length)
 {
     // We move the buffers the same amount of steps as the length of the match
-    for(unsigned i = 0; i <= code_group.length; i++)
+    for(unsigned i = 0; i <= group_length; i++)
     {
         // Push the first character of the lookahead into the history, pop lookahead
         if(m_lookahead.size() > 0 )
@@ -110,17 +110,17 @@ void LZ77::MoveBuffers(CodeGroup code_group)
     }
 }
 
-const unsigned LZ77::GetMatchLength(const unsigned i)
+const unsigned LZ77::GetMatchLength(const unsigned historyIndex)
 {
     unsigned result = 1;
     // Loop through the lookahead buffer and check for continuous matches
     for(unsigned j = 1; j < m_lookahead.size(); j++)
     {
         // If we still are matching in the history buffer
-        if(m_history.size() > i + j)
+        if(m_history.size() > historyIndex + j)
         {
             // If the continuous match is broken
-            if(m_lookahead.at(j) != m_history.at(i+j))
+            if(m_lookahead.at(j) != m_history.at(historyIndex+j))
             {
                 break;
             }
@@ -132,7 +132,7 @@ const unsigned LZ77::GetMatchLength(const unsigned i)
         else
         {
              // If the continuous match is broken
-             if(m_lookahead.at(j) != m_lookahead.at(i+j-m_history.size()))
+             if(m_lookahead.at(j) != m_lookahead.at(historyIndex+j-m_history.size()))
              {
                 break;
              }

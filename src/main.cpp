@@ -32,7 +32,6 @@ int main()
             std::cout << lz.Compress() << std::endl;
         }
     }
-
     return 0;
 }
 

@@ -37,10 +37,10 @@ class LZ77
 
     private:
         /// Find the length of a match
-        const unsigned GetMatchLength(const unsigned i);
+        const unsigned GetMatchLength(const unsigned historyIndex);
 
         /// Move the buffers
-        void MoveBuffers(CodeGroup code_group);
+        void MoveBuffers(const unsigned group_length);
 
         /// Make the LZ77 code group
         void MakeGroup(CodeGroup& code_group, const unsigned current, const unsigned historyIndex);
